@@ -5,39 +5,24 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <assert.h>
-#include <time.h>
 
+#define GRADES_COUNT 5
+#define MAX_ID_COUNT 1000
 
-#define CHUNK_COUNT 3
-#define MAX_FILE_NAME 25
-#define TIME_ARRAY_SIZE 9
-#define ARG_COUNT 3
-#define MAX_COMMAND_SIZE 25
+typedef struct Student {
+    char name[50];
+    int id;
+    float grades[GRADES_COUNT];
+} Student;
 
-typedef struct Chunk {
-    int chunkIndex;
-    int chunkSize;
-    char creationTime[TIME_ARRAY_SIZE];
-    char modificationTime[TIME_ARRAY_SIZE];
-    char accessTime[TIME_ARRAY_SIZE];
-} Chunk;
+void make_ids(FILE * file);
+int get_available_id();
 
-typedef struct Metadata {
-    int fileSize;
-    int chunkSize;
-    int totalNumberOfChunks;
-} Metadata;
-
-int * createChunks(int fd, char * filename, Metadata * metadata, Chunk * chunks, struct tm * timeinfo);
-void initializeMetadata(Metadata * metadata, int fd);
-void printMetadataInfo(Metadata * metadata);
-void initializeChunks(int * chunkFds, int fd, Metadata * metadata);
-void printChunkInfo(Chunk * chunk);
-void chunk_write(Chunk * chunk, int * chunkFds, int chunk_n, const char * str, struct tm * timeinfo);
-void chunk_read(Chunk * chunk, int * chunkFds, int chunk_n, struct tm * timeinfo);
-void chunks_concat(int * chunkFds, int fd, int count, char * fileName);
-// concat chunks
+void radd(FILE * file, const char * name, float * grades);
+Student * rnsearch(FILE * file, const char * name);
+Student * risearch(FILE * file, const int id); 
+void rupdate(FILE * file, const int old_id, const char * new_name, float * new_grades);
+void rdelete(FILE * file, int id);
+void rprintf(FILE * file);
 
 #endif
