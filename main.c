@@ -1,24 +1,21 @@
-#include "double_linked_list.h"
+#include "linked_list.h"
 
 int main() {
-    DLL * dll;
-    construct_list(&dll);
-    push_back(dll, 10);
-    push_back(dll, 20);
-    push_after(dll, dll->head, 40);
-    push_back(dll, 100);
-    push_front(dll, 120);
-    insert(dll, 2, 123);
-    remove_node(dll, dll->tail);
-    Node * current;
-    int iter = 1;
-    current = dll->head;
-    while(current->next) {
-        current = current->next;
-        printf("%d: %d\n", iter++, current->prev->data);
+    List * my_list;
+    list_constructor(my_list);
+    for (int i = 0; i < 5; ++i) {
+        push_back(my_list, i);
     }
-    printf("%d: %d\n", iter++, current->data);
-     printf("Size: %d\n", get_size(dll));
-    destroy_list(&dll);
+    print_node(my_list);
+    printf("Size: %d\n", my_list->size);
+    insert(my_list, 5, 14);
+    
+    List * my_copy = copy_list(my_list);
+    eraze(my_list, 0);
+    print_node(my_list);
+    print_node(my_copy);
+    destructor(&my_copy);
+    destructor(&my_list);
+    print_node(my_list);
     return 0;
 }
